@@ -5,6 +5,7 @@ import { isSupabaseConfigured } from './lib/supabase';
 import { AuthModal } from './components/AuthModal';
 import { ActivityInput } from './components/ActivityInput';
 import { ActivityCard } from './components/ActivityCard';
+import { ActivityEditModal } from './components/ActivityEditModal';
 import { useActivities } from './hooks/useActivities';
 import { Activity, ProcessedActivity } from './types/activity';
 
@@ -16,6 +17,8 @@ function ActivityMagic() {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [notification, setNotification] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingActivity, setEditingActivity] = useState<Activity | null>(null);
 
   const handleSignOut = async () => {
     const { error } = await signOut();
@@ -42,8 +45,20 @@ function ActivityMagic() {
   };
 
   const handleEditActivity = (activity: Activity) => {
-    // TODO: Implement edit modal
-    console.log('Edit activity:', activity);
+    setEditingActivity(activity);
+    setShowEditModal(true);
+  };
+
+  const handleSaveActivity = async (id: string, updates: Partial<Activity>) => {
+    try {
+      await updateActivity(id, updates);
+      setNotification({ type: 'success', message: 'Activity updated successfully!' });
+      setTimeout(() => setNotification(null), 3000);
+    } catch (error) {
+      console.error('Error updating activity:', error);
+      setNotification({ type: 'error', message: 'Failed to update activity. Please try again.' });
+      setTimeout(() => setNotification(null), 3000);
+    }
   };
 
   const handleDeleteActivity = async (activity: Activity) => {
@@ -344,6 +359,15 @@ function ActivityMagic() {
       </main>
 
       <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
+      <ActivityEditModal
+        isOpen={showEditModal}
+        onClose={() => {
+          setShowEditModal(false);
+          setEditingActivity(null);
+        }}
+        onSave={handleSaveActivity}
+        activity={editingActivity}
+      />
     </div>
   );
 }
