@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { processActivityInput, ActivityProcessingResult } from '../lib/activity-processor';
 import { ProcessedActivity } from '../types/activity';
-import { Sparkles, Link, Loader2 } from 'lucide-react';
+import { Sparkles, Link, Loader2, HelpCircle } from 'lucide-react';
 
 interface ActivityInputProps {
   onActivityProcessed: (activity: ProcessedActivity) => void;
@@ -15,6 +15,7 @@ export const ActivityInput: React.FC<ActivityInputProps> = ({
   const [inputText, setInputText] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [hasUrl, setHasUrl] = useState(false);
+  const [showTips, setShowTips] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,10 +70,20 @@ export const ActivityInput: React.FC<ActivityInputProps> = ({
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div className="mb-4">
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">
-          Add New Activity
-        </h2>
-        <p className="text-gray-600 text-sm">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-gray-900">
+            Add New Activity
+          </h2>
+          <button
+            type="button"
+            onClick={() => setShowTips(!showTips)}
+            className="flex items-center gap-1 text-blue-600 hover:text-blue-700 text-sm font-medium"
+          >
+            <HelpCircle className="w-4 h-4" />
+            Tips
+          </button>
+        </div>
+        <p className="text-gray-600 text-sm mt-1">
           Paste a description, link, or any text about an activity you'd like to remember and share.
         </p>
       </div>
@@ -83,8 +94,13 @@ export const ActivityInput: React.FC<ActivityInputProps> = ({
             value={inputText}
             onChange={handleInputChange}
             onPaste={handlePaste}
-            placeholder="Paste a link, describe an activity, or share an idea...&#10;&#10;Examples:&#10;• https://example-museum.com&#10;• Apple picking at Johnson's Farm this weekend&#10;• New Italian restaurant downtown, perfect for date night"
-            className="w-full h-32 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
+            placeholder="Paste a link, describe an activity, or share an idea...
+
+Examples:
+• https://example-museum.com
+• Apple picking at Johnson's Farm this weekend
+• New Italian restaurant downtown, perfect for date night"
+            className="w-full h-40 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
             disabled={isProcessing}
           />
           
@@ -123,16 +139,18 @@ export const ActivityInput: React.FC<ActivityInputProps> = ({
         </div>
       </form>
 
-      {/* Tips */}
-      <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-        <h4 className="text-sm font-medium text-blue-900 mb-2">💡 Tips for better results:</h4>
-        <ul className="text-xs text-blue-700 space-y-1">
-          <li>• Include location, date, or time when possible</li>
-          <li>• Paste links to event pages, restaurant websites, or venue pages</li>
-          <li>• Mention who the activity is for (family, kids, adults, etc.)</li>
-          <li>• Include any special requirements or notes</li>
-        </ul>
-      </div>
+      {/* Tips - Collapsible */}
+      {showTips && (
+        <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+          <h4 className="text-sm font-medium text-blue-900 mb-2">💡 Tips for better results:</h4>
+          <ul className="text-xs text-blue-700 space-y-1">
+            <li>• Include location, date, or time when possible</li>
+            <li>• Paste links to event pages, restaurant websites, or venue pages</li>
+            <li>• Mention who the activity is for (family, kids, adults, etc.)</li>
+            <li>• Include any special requirements or notes</li>
+          </ul>
+        </div>
+      )}
     </div>
   );
 };

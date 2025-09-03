@@ -15,7 +15,6 @@ function ActivityMagic() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
-  const [showAddForm, setShowAddForm] = useState(false);
   const [notification, setNotification] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   const handleSignOut = async () => {
@@ -29,7 +28,6 @@ function ActivityMagic() {
     try {
       await addActivity(processedActivity);
       setNotification({ type: 'success', message: 'Activity added successfully!' });
-      setShowAddForm(false);
       setTimeout(() => setNotification(null), 3000);
     } catch (error) {
       console.error('Error adding activity:', error);
@@ -185,23 +183,10 @@ function ActivityMagic() {
         {/* Add Activity Section */}
         {user && (
           <div className="mb-8">
-            {!showAddForm ? (
-              <button
-                onClick={() => setShowAddForm(true)}
-                className="w-full h-32 bg-white border-2 border-dashed border-gray-300 hover:border-blue-400 rounded-xl flex items-center justify-center transition-colors group"
-              >
-                <div className="text-center text-gray-500 group-hover:text-blue-600">
-                  <Plus className="w-8 h-8 mx-auto mb-2 group-hover:scale-110 transition-transform" />
-                  <p className="text-lg font-medium">Add New Activity</p>
-                  <p className="text-sm text-gray-400 mt-1">Paste a link or describe an activity idea</p>
-                </div>
-              </button>
-            ) : (
-              <ActivityInput
-                onActivityProcessed={handleActivityProcessed}
-                onError={handleError}
-              />
-            )}
+            <ActivityInput
+              onActivityProcessed={handleActivityProcessed}
+              onError={handleError}
+            />
           </div>
         )}
 
