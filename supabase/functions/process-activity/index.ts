@@ -1,5 +1,4 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -145,17 +144,17 @@ Return only the JSON object, no additional text.
   }
 
   const data = await response.json()
-  const content = data.choices[0]?.message?.content
+  const responseContent = data.choices[0]?.message?.content
 
-  if (!content) {
+  if (!responseContent) {
     throw new Error('No content received from OpenAI')
   }
 
   try {
-    const parsed = JSON.parse(content)
+    const parsed = JSON.parse(responseContent)
     return parsed as ProcessedActivity
   } catch (error) {
-    console.error('Failed to parse OpenAI response:', content)
+    console.error('Failed to parse OpenAI response:', responseContent)
     throw new Error('Invalid response format from OpenAI')
   }
 }
