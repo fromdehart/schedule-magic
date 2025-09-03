@@ -11,35 +11,14 @@ export async function processActivityInput(
   url?: string
 ): Promise<ActivityProcessingResult> {
   try {
-    // If we have a URL, try to fetch content first
-    let contentToProcess = rawText;
-    if (url) {
-      try {
-        const response = await fetch('/api/process-url', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ url }),
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          contentToProcess = data.content || rawText;
-        }
-      } catch (error) {
-        console.warn('Failed to fetch URL content, using raw text:', error);
-      }
-    }
-
-    // Call OpenAI to process the content
+    // Call OpenAI to process the content (it can handle URLs directly)
     const response = await fetch('/api/process-activity', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ 
-        content: contentToProcess,
+        content: rawText,
         url: url 
       }),
     });

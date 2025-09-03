@@ -91,11 +91,10 @@ async function processWithOpenAI(
   apiKey: string
 ): Promise<ProcessedActivity> {
   const prompt = `
-You are an AI assistant that extracts structured information from activity descriptions. 
+You are an AI assistant that extracts structured information from activity descriptions or URLs. 
 Analyze the following text and extract key details about an activity or event.
 
-Text to analyze: "${content}"
-${url ? `Source URL: ${url}` : ''}
+${url ? `URL to analyze: ${url}` : `Text to analyze: "${content}"`}
 
 Please extract and return a JSON object with the following structure:
 {
