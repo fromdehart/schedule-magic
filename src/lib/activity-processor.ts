@@ -11,11 +11,24 @@ export async function processActivityInput(
   url?: string
 ): Promise<ActivityProcessingResult> {
   try {
-    // Call OpenAI to process the content (it can handle URLs directly)
-    const response = await fetch('/api/process-activity', {
+    // Get Supabase URL from environment
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    
+    if (!supabaseUrl) {
+      // Fallback to local processing if Supabase is not configured
+      const fallbackActivity = processActivityFallback(rawText);
+      return {
+        success: true,
+        activity: fallbackActivity
+      };
+    }
+
+    // Call Supabase Edge Function
+    const response = await fetch(`${supabaseUrl}/functions/v1/process-activity`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
       },
       body: JSON.stringify({ 
         content: rawText,
@@ -42,9 +55,11 @@ export async function processActivityInput(
     }
   } catch (error) {
     console.error('Error processing activity:', error);
+    // Fallback to local processing on error
+    const fallbackActivity = processActivityFallback(rawText);
     return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error occurred'
+      success: true,
+      activity: fallbackActivity
     };
   }
 }
