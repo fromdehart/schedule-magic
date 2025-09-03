@@ -1,0 +1,29 @@
+{
+  "name": "MenuMagic - Family Meal Planning & Pantry Tracker",
+  "short_name": "MenuMagic",
+  "description": "Plan your family's weekly meals with AI-powered suggestions. Generate meal ideas, manage ingredients, and create shopping lists all in one place.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#10b981",
+  "theme_color": "#10b981",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/assets/menuMagicSquare.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/menuMagicSquare.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/menuMagicSquare.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["food", "lifestyle", "productivity"],
+  "lang": "en-US"
+}

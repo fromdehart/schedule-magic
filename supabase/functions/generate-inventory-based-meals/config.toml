@@ -1,0 +1,2 @@
+[functions.generate-inventory-based-meals]
+verify_jwt = true

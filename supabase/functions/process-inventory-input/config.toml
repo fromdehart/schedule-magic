@@ -1,0 +1,2 @@
+[functions.process-inventory-input]
+verify_jwt = true

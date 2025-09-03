@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MenuMagic</string>
+    <string name="title_activity_main">MenuMagic</string>
+    <string name="package_name">com.bigideer.menumagic</string>
+    <string name="custom_url_scheme">com.bigideer.menumagic</string>
+</resources>
