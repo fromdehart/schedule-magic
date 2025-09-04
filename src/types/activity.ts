@@ -20,6 +20,7 @@ export interface Activity {
   age_appropriate?: string;
   weather_dependent?: boolean;
   notes?: string;
+  contacts?: Contact[]; // associated contacts
 }
 
 export interface ActivityInput {
@@ -64,4 +65,18 @@ export interface ActivityFormData {
   notes: string;
   is_shared: boolean;
   shared_with: string[];
+}
+
+export interface Contact {
+  id: string;
+  user_id: string;
+  name: string;
+  phone?: string;
+  created_at: string;
+}
+
+export interface ActivityContact {
+  activity_id: string;
+  contact_id: string;
+  created_at: string;
 }

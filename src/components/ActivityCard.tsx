@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Activity, ActivityCardProps } from '../types/activity';
-import { Edit3, Trash2, Share2, MapPin, Calendar, Clock, DollarSign, Users, Cloud, CloudOff } from 'lucide-react';
+import { ActivityCardProps } from '../types/activity';
+import { Edit3, Trash2, Share2, MapPin, Calendar, Clock, DollarSign, Users, Cloud, UserPlus } from 'lucide-react';
+import { ContactsModal } from './ContactsModal';
 
 const categoryColors: { [key: string]: string } = {
   food: 'bg-orange-100 text-orange-800 border-orange-200',
@@ -40,10 +41,11 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
   activity,
   onEdit,
   onDelete,
-  onShare,
-  onStatusChange
+  onShare
 }) => {
   const [showActions, setShowActions] = useState(false);
+  const [showContactsModal, setShowContactsModal] = useState(false);
+  const [contacts, setContacts] = useState(activity.contacts || []);
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return null;
@@ -150,6 +152,14 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
 
       {/* Details */}
       <div className="px-4 pb-3 space-y-2">
+        {contacts.length > 0 && (
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <Users className="w-4 h-4 text-gray-400" />
+            <span className="truncate">
+              {contacts.map(c => c.name).join(', ')}
+            </span>
+          </div>
+        )}
         {activity.location && (
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <MapPin className="w-4 h-4 text-gray-400" />
@@ -237,37 +247,22 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
         </div>
       )}
 
-      {/* Status change buttons */}
-      {onStatusChange && (
-        <div className="px-4 pb-4">
-          <div className="flex gap-2">
-            {activity.status !== 'idea' && (
-              <button
-                onClick={() => onStatusChange(activity, 'idea')}
-                className="px-3 py-1 text-xs font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                Mark as Idea
-              </button>
-            )}
-            {activity.status !== 'planned' && (
-              <button
-                onClick={() => onStatusChange(activity, 'planned')}
-                className="px-3 py-1 text-xs font-medium text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
-              >
-                Plan It
-              </button>
-            )}
-            {activity.status !== 'completed' && (
-              <button
-                onClick={() => onStatusChange(activity, 'completed')}
-                className="px-3 py-1 text-xs font-medium text-green-600 hover:text-green-800 hover:bg-green-50 rounded-lg transition-colors"
-              >
-                Mark Done
-              </button>
-            )}
-          </div>
-        </div>
-      )}
+      {/* People selection button */}
+      <div className="px-4 pb-4">
+        <button
+          onClick={() => setShowContactsModal(true)}
+          className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+        >
+          <UserPlus className="w-4 h-4" />
+          Add People
+        </button>
+      </div>
+      <ContactsModal
+        isOpen={showContactsModal}
+        onClose={() => setShowContactsModal(false)}
+        activityId={activity.id}
+        onSaved={(selected) => setContacts(selected)}
+      />
     </div>
   );
 };
