@@ -30,6 +30,12 @@ const priorityColors: { [key: string]: string } = {
   high: 'bg-red-100 text-red-700'
 };
 
+const priorityLabels: { [key: string]: string } = {
+  low: 'Maybe',
+  medium: 'Interesting',
+  high: 'Must Do'
+};
+
 export const ActivityCard: React.FC<ActivityCardProps> = ({
   activity,
   onEdit,
@@ -88,7 +94,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
                 {activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}
               </span>
               <span className={`px-2 py-1 rounded-full text-xs font-medium ${priorityColors[activity.priority]}`}>
-                {activity.priority.charAt(0).toUpperCase() + activity.priority.slice(1)}
+                {priorityLabels[activity.priority] || activity.priority}
               </span>
               {activity.weather_dependent && (
                 <span className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-sky-100 text-sky-700">

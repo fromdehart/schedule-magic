@@ -94,13 +94,8 @@ export const ActivityInput: React.FC<ActivityInputProps> = ({
             value={inputText}
             onChange={handleInputChange}
             onPaste={handlePaste}
-            placeholder="Paste a link, describe an activity, or share an idea...
-
-Examples:
-• https://example-museum.com
-• Apple picking at Johnson's Farm this weekend
-• New Italian restaurant downtown, perfect for date night"
-            className="w-full h-40 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
+            placeholder="Paste a link or describe an activity"
+            className="w-full h-28 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
             disabled={isProcessing}
           />
           
@@ -113,16 +108,11 @@ Examples:
           )}
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <Sparkles className="w-4 h-4" />
-            <span>AI will extract details automatically</span>
-          </div>
-          
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <button
             type="submit"
             disabled={isProcessing || !inputText.trim()}
-            className="flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
+            className="w-full md:w-auto flex items-center justify-center gap-2 px-4 py-3 md:px-6 md:py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors md:order-2"
           >
             {isProcessing ? (
               <>
@@ -136,6 +126,10 @@ Examples:
               </>
             )}
           </button>
+          <div className="flex items-center justify-center gap-2 text-sm text-gray-500 md:order-1">
+            <Sparkles className="w-4 h-4" />
+            <span>AI will extract the data automatically</span>
+          </div>
         </div>
       </form>
 

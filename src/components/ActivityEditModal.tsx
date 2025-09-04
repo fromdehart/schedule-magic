@@ -22,9 +22,9 @@ const statusOptions = [
 ];
 
 const priorityOptions = [
-  { value: 'low', label: 'Low' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'high', label: 'High' }
+  { value: 'high', label: 'Must Do' },
+  { value: 'medium', label: 'Interesting' },
+  { value: 'low', label: 'Maybe' }
 ];
 
 export const ActivityEditModal: React.FC<ActivityEditModalProps> = ({
